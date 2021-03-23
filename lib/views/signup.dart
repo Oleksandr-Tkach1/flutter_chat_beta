@@ -21,6 +21,10 @@ class _SignUpState extends State<SignUp> {
               children: [
                 TextField(
                   style: simpleTextFieldStyle(),
+                  decoration: textFieldInputDecoration('Username'),
+                ),
+                TextField(
+                  style: simpleTextFieldStyle(),
                   decoration: textFieldInputDecoration('Email'),
                 ),
                 TextField(
@@ -49,7 +53,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       borderRadius: BorderRadius.circular(30)
                   ),
-                  child: Text('Sign In', style: simpleTextFieldStyle(),),
+                  child: Text('Sign Up', style: simpleTextFieldStyle(),),
                 ),
                 SizedBox(height: 18),
                 Container(
@@ -60,14 +64,14 @@ class _SignUpState extends State<SignUp> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30)
                   ),
-                  child: Text('Sign In with Google', style: TextStyle(color: Colors.black, fontSize: 20),),
+                  child: Text('Sign Up with Google', style: TextStyle(color: Colors.black, fontSize: 20),),
                 ),
                 SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Don`t have account? ', style: TextStyle(fontSize: 17, color: Colors.white)),
-                    Text('Register now', style: TextStyle(fontSize: 17, color: Colors.white, decoration: TextDecoration.underline)),
+                    Text('Already have account? ', style: TextStyle(fontSize: 17, color: Colors.white)),
+                    Text('SignIn now', style: TextStyle(fontSize: 17, color: Colors.white, decoration: TextDecoration.underline)),
                   ],
                 ),
               ],
