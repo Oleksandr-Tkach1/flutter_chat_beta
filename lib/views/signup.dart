@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 class SignUp extends StatefulWidget {
@@ -6,6 +7,17 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController userNameTextEditingController = new TextEditingController();
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
+
+  signMeUP(){
+    if(formKey.currentState.validate()){
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,17 +31,33 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               mainAxisSize: MainAxisSize.min, // Размер всего поля чтобы можно было маштабировать
               children: [
-                TextField(
-                  style: simpleTextFieldStyle(),
-                  decoration: textFieldInputDecoration('Username'),
-                ),
-                TextField(
-                  style: simpleTextFieldStyle(),
-                  decoration: textFieldInputDecoration('Email'),
-                ),
-                TextField(
-                    style: simpleTextFieldStyle(),
-                    decoration: textFieldInputDecoration('Password')
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (val){
+                          return val.isEmpty || val.length < 2 ? 'Please Provide UserName' : null;
+                        },
+                        controller: userNameTextEditingController,
+                        style: simpleTextFieldStyle(),
+                        decoration: textFieldInputDecoration('Username'),
+                      ),
+                      TextFormField(
+                        validator: (val){
+                          return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val) ? null : "Please Enter Correct Email";
+                        },
+                        controller: emailTextEditingController,
+                        style: simpleTextFieldStyle(),
+                        decoration: textFieldInputDecoration('Email'),
+                      ),
+                      TextFormField(
+                          controller: passwordTextEditingController,
+                          style: simpleTextFieldStyle(),
+                          decoration: textFieldInputDecoration('Password')
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 25),
                 Container(
@@ -40,20 +68,25 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 25),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          const Color(0xff007ef4),
-                          const Color(0xff2a75bc),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(30)
+                GestureDetector(
+                  onTap: (){
+                    signMeUP();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            const Color(0xff007ef4),
+                            const Color(0xff2a75bc),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(30)
+                    ),
+                    child: Text('Sign Up', style: simpleTextFieldStyle(),),
                   ),
-                  child: Text('Sign Up', style: simpleTextFieldStyle(),),
                 ),
                 SizedBox(height: 18),
                 Container(
