@@ -25,15 +25,15 @@ class _SignUpState extends State<SignUp> {
 
   signMeUP(){
     if(formKey.currentState.validate()){
+      Map<String, String> userInfoMap = {
+        'name' : userNameTextEditingController.text,
+        'email' : emailTextEditingController.text,
+      };
       setState(() {
         isLoading = true;
       });
       authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val){
         //print('${val.uid}');
-        Map<String, String> userInfoMap = {
-          'name' : userNameTextEditingController.text,
-          'email' : emailTextEditingController.text,
-        };
         databaseMethods.uploadUserInfo(userInfoMap);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatRoomsScreen()));
       });

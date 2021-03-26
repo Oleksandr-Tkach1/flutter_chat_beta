@@ -16,7 +16,13 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Your chats',style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,))),
+        title: Container(
+          padding: EdgeInsets.only(right: 15),
+          child: Center(
+              child: Text('Your chats',style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,)
+              ),
+          ),
+        ),
         actions: [
           GestureDetector(
             onTap: (){
@@ -26,7 +32,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
             child: Container(
               padding: EdgeInsets.only(right: 15),
               child:
-                Icon(Icons.exit_to_app,color: Colors.white,size: 24,),
+                Icon(Icons.exit_to_app,color: Colors.white,size: 26),
             ),
           ),
         ],
