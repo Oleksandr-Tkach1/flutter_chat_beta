@@ -8,6 +8,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  TextEditingController emailTextEditingController = new TextEditingController();
+  TextEditingController passwordTextEditingController = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +24,12 @@ class _SignInState extends State<SignIn> {
               mainAxisSize: MainAxisSize.min, // Размер всего поля чтобы можно было маштабировать
               children: [
                 TextField(
+                  controller: emailTextEditingController,
                   style: simpleTextFieldStyle(),
                   decoration: textFieldInputDecoration('Email'),
                 ),
                 TextField(
+                  controller: passwordTextEditingController,
                     style: simpleTextFieldStyle(),
                   decoration: textFieldInputDecoration('Password')
                   ),

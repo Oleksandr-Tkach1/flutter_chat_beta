@@ -23,6 +23,11 @@ class _SearchState extends State<Search> {
     });
   }
 
+  createChatRoomStartConversation(String userName){
+    List<String> user =[userName, myName];
+    databaseMethods.createChatRoom(chatRoomId, chatRoomMap)
+  }
+
   Widget searchList(){
     return searchSnapshot != null && searchSnapshot.size > 0 ? ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 392.7,),
@@ -140,16 +145,20 @@ class SearchedItemTile extends StatelessWidget {
               Text(userEmail, style: simpleTextFieldStyle(),),
             ],
           ),
-          //Search(),
           Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(30),
+          GestureDetector(
+            onTap: (){
+              //Navigator.push(context, route)
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+              child: Text('Message', style: TextStyle(color: Colors.white, fontSize: 16,),
+              ),
             ),
-            //TODO
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text('Message'),
           ),
         ],
       ),

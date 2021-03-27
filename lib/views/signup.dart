@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
@@ -29,12 +30,17 @@ class _SignUpState extends State<SignUp> {
         'name' : userNameTextEditingController.text,
         'email' : emailTextEditingController.text,
       };
+
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+
       setState(() {
         isLoading = true;
       });
       authMethods.signUpWithEmailAndPassword(emailTextEditingController.text, passwordTextEditingController.text).then((val){
         //print('${val.uid}');
         databaseMethods.uploadUserInfo(userInfoMap);
+        HelperFunctions.saveUserLoggedInSharedPreference(true);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ChatRoomsScreen()));
       });
     }
