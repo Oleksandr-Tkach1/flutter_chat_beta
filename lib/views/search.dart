@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_beta/helper/constants.dart';
+import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 import 'chatRoomsScreen.dart';
+import 'conversatoin_screen.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -14,19 +17,6 @@ class _SearchState extends State<Search> {
   TextEditingController searchTextEditingController = new TextEditingController();
 
   QuerySnapshot searchSnapshot;
-
-  initiateSearch(){
-    databaseMethods.getUserByUsername(searchTextEditingController.text).then((val){
-      setState(() {
-        searchSnapshot = val;
-      });
-    });
-  }
-
-  createChatRoomStartConversation(String userName){
-    List<String> user =[userName, myName];
-    databaseMethods.createChatRoom(chatRoomId, chatRoomMap)
-  }
 
   Widget searchList(){
     return searchSnapshot != null && searchSnapshot.size > 0 ? ConstrainedBox(
@@ -41,6 +31,65 @@ class _SearchState extends State<Search> {
             );
           }),
     ) : Container();
+  }
+
+  initiateSearch(){
+    databaseMethods.getUserByUsername(searchTextEditingController.text).then((val){
+      setState(() {
+        searchSnapshot = val;
+      });
+    });
+  }
+
+  createChatRoomStartConversation({String userName}){
+
+    if(userName == Constants.myName){
+      String chatRoomId = getChatRoomId(userName, Constants.myName);
+      List<String> users =[userName, Constants.myName];
+      Map<String, dynamic> chatRoomMap = {
+        'users' : users,
+        'chatrooId' : chatRoomId
+      };
+      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ConversationScreen())
+      );
+    }else{
+      print('you cannot send message  to yourself');
+    }
+  }
+
+  Widget SearchedItemTile({String userName, String userEmail}){
+    return Container(
+      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(userName, style: simpleTextFieldStyle(),),
+              Text(userEmail, style: simpleTextFieldStyle(),),
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: (){
+              createChatRoomStartConversation(
+                userName: userName
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+              child: Text('Message', style: TextStyle(color: Colors.white, fontSize: 16,),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -128,40 +177,11 @@ class _SearchState extends State<Search> {
     );
   }
 }
-class SearchedItemTile extends StatelessWidget {
-  final String userName;
-  final String userEmail;
-  SearchedItemTile({this.userName, this.userEmail});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(userName, style: simpleTextFieldStyle(),),
-              Text(userEmail, style: simpleTextFieldStyle(),),
-            ],
-          ),
-          Spacer(),
-          GestureDetector(
-            onTap: (){
-              //Navigator.push(context, route)
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-              child: Text('Message', style: TextStyle(color: Colors.white, fontSize: 16,),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+
+getChatRoomId(String a, String b){
+  if(a.substring(0, 1).codeUnitAt(0)>b.substring(0, 1).codeUnitAt(0)){
+    return "$b\_$a";
+  }else{
+    return "$a\_$b";
   }
 }

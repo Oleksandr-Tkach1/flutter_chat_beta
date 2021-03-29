@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/authenticate.dart';
+import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
 import 'package:flutter_chat_beta/views/search.dart';
 
@@ -10,7 +11,28 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  bool userIsLoggedIn = false;
+
+  @override
+  void initState() {
+    getLoggedInState();
+    super.initState();
+  }
+
+  getLoggedInState() async {
+    await HelperFunctions.getUserLoggedInSharedPreference().then((value){
+      setState(() {
+        userIsLoggedIn = value;
+      });
+    });
+  }
     @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,9 +43,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color(0xff1f1f1f),
         primarySwatch: Colors.blue,
       ),
-      //home: Authenticate(),
+      home: userIsLoggedIn == null ? ChatRoomsScreen() : Authenticate(),
       //home: ChatRoomsScreen(),
-      home: Search(),
+      //home: Search(),
     );
   }
 }
