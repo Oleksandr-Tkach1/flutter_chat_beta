@@ -50,7 +50,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search, color: Colors.white,),
+        child: Icon(Icons.add, color: Colors.white, size: 45,
+        ),
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(builder: (context) => Search()));
         },

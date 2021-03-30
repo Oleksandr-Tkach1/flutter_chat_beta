@@ -5,6 +5,8 @@ import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
 import 'package:flutter_chat_beta/views/search.dart';
 
+import 'views/conversatoin_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -40,12 +42,11 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xff007ef4),
-        scaffoldBackgroundColor: Color(0xff1f1f1f),
+        scaffoldBackgroundColor: Color(0xff3b3a3a),
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn == null ? ChatRoomsScreen() : Authenticate(),
-      //home: ChatRoomsScreen(),
-      //home: Search(),
+      //home: userIsLoggedIn == null ? Authenticate() : ChatRoomsScreen(),
+      home: ConversationScreen(''),
     );
   }
 }

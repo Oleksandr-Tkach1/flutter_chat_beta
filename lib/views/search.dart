@@ -43,7 +43,7 @@ class _SearchState extends State<Search> {
 
   createChatRoomStartConversation({String userName}){
 
-    if(userName == Constants.myName){
+    if(userName != Constants.myName){
       String chatRoomId = getChatRoomId(userName, Constants.myName);
       List<String> users =[userName, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
@@ -51,7 +51,9 @@ class _SearchState extends State<Search> {
         'chatrooId' : chatRoomId
       };
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ConversationScreen())
+      Navigator.push(context, MaterialPageRoute(builder: (context) => ConversationScreen(
+        chatRoomId,
+      ))
       );
     }else{
       print('you cannot send message  to yourself');

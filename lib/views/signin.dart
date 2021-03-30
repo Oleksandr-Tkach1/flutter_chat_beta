@@ -77,6 +77,7 @@ class _SignInState extends State<SignIn> {
                         decoration: textFieldInputDecoration('Email'),
                       ),
                       TextFormField(
+                          obscureText: true,
                           validator: (val) {
                             return val.length > 6
                                 ? null

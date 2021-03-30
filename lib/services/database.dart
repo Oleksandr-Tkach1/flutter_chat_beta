@@ -22,12 +22,22 @@ class DatabaseMethods {
   }
 
   createChatRoom(String chatRoomId, chatRoomMap) {
-    FirebaseFirestore.instance
-        .collection('ChatRoom')
-        .doc(chatRoomId)
-        .set(chatRoomMap)
+    FirebaseFirestore.instance.collection('ChatRoom').doc(chatRoomId).set(
+        chatRoomMap).catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  addConversationMessage(String chatRoomId, messageMap) {
+    FirebaseFirestore.instance.collection('ChatRoom').doc(chatRoomId)
+        .collection("chats").add(messageMap)
         .catchError((e) {
       print(e.toString());
     });
+  }
+
+  getConversationMessage(String chatRoomId) {
+    FirebaseFirestore.instance.collection('ChatRoom').doc(chatRoomId)
+        .collection("chats").snapshots();
   }
 }
