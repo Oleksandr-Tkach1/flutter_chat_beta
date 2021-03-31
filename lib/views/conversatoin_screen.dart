@@ -23,10 +23,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
           return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
-                var messages = snapshot.data.docs[index].data()["message"];
-                return Container(
-                  child: Text(messages, style: TextStyle(fontSize: 20, color: Colors.white),),
-                );
+                return MessageTile (snapshot.data.docs[index].data()["message"], snapshot.data.docs[index].data()["sendBy"] == Constants.myName);
+                // return Container(
+                //   child: Text(messages, style: TextStyle(fontSize: 20, color: Colors.white),),
+                // );
               }): Container();
         }
     );
@@ -118,6 +118,12 @@ class MessageTile extends StatelessWidget {
   MessageTile(this.message, this.isSendByMe);
   @override
   Widget build(BuildContext context) {
-    return Text(message);
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+          child: Text(message)
+      ),
+    );
   }
 }
