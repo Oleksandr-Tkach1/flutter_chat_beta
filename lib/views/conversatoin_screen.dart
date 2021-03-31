@@ -14,29 +14,30 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController messageController = new TextEditingController();
-  Stream chatMessageStream;
+  Stream chatMessagesStream;
 
   Widget ChatMessageList() {
-    return chatMessageStream != null ? StreamBuilder(
-        stream: chatMessageStream,
+    return StreamBuilder(
+        stream: chatMessagesStream,
         builder: (BuildContext  context, snapshot) {
-          return ListView.builder(
+          return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 var messages = snapshot.data.docs[index].data()["message"];
                 return Container(
                   child: Text(messages, style: TextStyle(fontSize: 20, color: Colors.white),),
                 );
-              });
+              }): Container();
         }
-    ): Container(color: Colors.red[600],);
+    );
   }
 
   sendMessage(){
-    if(messageController.text.isNotEmpty && messageController.text == null){
-      Map<String,String> messageMap = {
+    if(messageController.text.isNotEmpty){
+      Map<String,dynamic> messageMap = {
         'message': messageController.text,
         'sendBy': Constants.myName,
+        'time': DateTime.now().millisecondsSinceEpoch,
       };
       databaseMethods.addConversationMessage(widget.chatRoomId, messageMap);
       messageController.text = "";
@@ -47,7 +48,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   void initState() {
     databaseMethods.getConversationMessage(widget.chatRoomId).then((value){
       setState(() {
-        chatMessageStream = value;
+        chatMessagesStream = value;
       });
     });
     super.initState();
@@ -60,6 +61,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: [
+            ChatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
@@ -112,7 +114,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
 }
 class MessageTile extends StatelessWidget {
   final String message;
-  MessageTile(this.message);
+  final bool isSendByMe;
+  MessageTile(this.message, this.isSendByMe);
   @override
   Widget build(BuildContext context) {
     return Text(message);

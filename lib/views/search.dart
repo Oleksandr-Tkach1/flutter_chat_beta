@@ -14,53 +14,63 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
-  TextEditingController searchTextEditingController = new TextEditingController();
+  TextEditingController searchTextEditingController =
+      new TextEditingController();
 
   QuerySnapshot searchSnapshot;
 
-  Widget searchList(){
-    return searchSnapshot != null && searchSnapshot.size > 0 ? ConstrainedBox(
-      constraints: BoxConstraints(maxWidth: 392.7,),
-      child: ListView.builder(
-          itemCount: searchSnapshot.docs.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index){
-            return SearchedItemTile(
-              userName: searchSnapshot.docs[index].data()["name"],
-              userEmail: searchSnapshot.docs[index].data()["email"],
-            );
-          }),
-    ) : Container();
+  Widget searchList() {
+    return searchSnapshot != null && searchSnapshot.size > 0
+        ? ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 392.7,
+            ),
+            child: ListView.builder(
+                itemCount: searchSnapshot.docs.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return SearchedItemTile(
+                    userName: searchSnapshot.docs[index].data()["name"],
+                    userEmail: searchSnapshot.docs[index].data()["email"],
+                  );
+                }),
+          )
+        : Container();
   }
 
-  initiateSearch(){
-    databaseMethods.getUserByUsername(searchTextEditingController.text).then((val){
+  initiateSearch() {
+    databaseMethods
+        .getUserByUsername(searchTextEditingController.text)
+        .then((val) {
       setState(() {
         searchSnapshot = val;
       });
     });
   }
 
-  createChatRoomStartConversation({String userName}){
-
-    if(userName != Constants.myName){
+  createChatRoomStartConversation({String userName}) {
+    if (userName != Constants.myName) {
       String chatRoomId = getChatRoomId(userName, Constants.myName);
-      List<String> users =[userName, Constants.myName];
+      List<String> users = [userName, Constants.myName];
       Map<String, dynamic> chatRoomMap = {
-        'users' : users,
-        'chatrooId' : chatRoomId
+        'users': users,
+        'chatrooId': chatRoomId
       };
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ConversationScreen(
-        chatRoomId,
-      ))
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConversationScreen(
+            chatRoomId,
+          ),
+        ),
       );
-    }else{
+    } else {
       print('you cannot send message  to yourself');
     }
   }
 
-  Widget SearchedItemTile({String userName, String userEmail}){
+  Widget SearchedItemTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.only(left: 16.0, right: 16.0),
       child: Row(
@@ -68,16 +78,20 @@ class _SearchState extends State<Search> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(userName, style: simpleTextFieldStyle(),),
-              Text(userEmail, style: simpleTextFieldStyle(),),
+              Text(
+                userName,
+                style: simpleTextFieldStyle(),
+              ),
+              Text(
+                userEmail,
+                style: simpleTextFieldStyle(),
+              ),
             ],
           ),
           Spacer(),
           GestureDetector(
-            onTap: (){
-              createChatRoomStartConversation(
-                userName: userName
-              );
+            onTap: () {
+              createChatRoomStartConversation(userName: userName);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -85,7 +99,12 @@ class _SearchState extends State<Search> {
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
-              child: Text('Message', style: TextStyle(color: Colors.white, fontSize: 16,),
+              child: Text(
+                'Message',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
               ),
             ),
           ),
@@ -107,12 +126,15 @@ class _SearchState extends State<Search> {
         title: Container(
           padding: EdgeInsets.only(right: 50),
           child: Center(
-            child: Text('Adding a chat',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),textAlign: TextAlign.left,),
+            child: Text(
+              'Adding a chat',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
+            ),
           ),
         ),
         leading: IconButton(
@@ -139,7 +161,7 @@ class _SearchState extends State<Search> {
                   Expanded(
                     child: TextField(
                       controller: searchTextEditingController,
-                      style: TextStyle(color: Colors.white,fontSize: 20),
+                      style: TextStyle(color: Colors.white, fontSize: 20),
                       decoration: InputDecoration(
                         hintText: 'Search username...',
                         hintStyle: TextStyle(color: Colors.white),
@@ -148,7 +170,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       initiateSearch();
                     },
                     child: Container(
@@ -171,7 +193,9 @@ class _SearchState extends State<Search> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             searchList(),
           ],
         ),
@@ -180,10 +204,10 @@ class _SearchState extends State<Search> {
   }
 }
 
-getChatRoomId(String a, String b){
-  if(a.substring(0, 1).codeUnitAt(0)>b.substring(0, 1).codeUnitAt(0)){
+getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
     return "$b\_$a";
-  }else{
+  } else {
     return "$a\_$b";
   }
 }

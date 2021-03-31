@@ -36,8 +36,8 @@ class DatabaseMethods {
     });
   }
 
-  getConversationMessage(String chatRoomId) {
-    FirebaseFirestore.instance.collection('ChatRoom').doc(chatRoomId)
-        .collection("chats").snapshots();
+  getConversationMessage(String chatRoomId) async{
+    return await FirebaseFirestore.instance.collection('ChatRoom').doc(chatRoomId)
+        .collection("chats").orderBy('time', descending: false).snapshots();
   }
 }
