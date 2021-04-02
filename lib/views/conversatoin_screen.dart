@@ -119,10 +119,36 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: isSendByMe ? 0 : 14, right: isSendByMe ? 14 : 0),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-          child: Text(message)
+        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isSendByMe ? [
+              const Color(0xff007ef4),
+              const Color(0xff2a75bc),
+            ] : [
+              const Color(0x1affffff),
+              const Color(0x1affffff),
+            ],
+          ),
+          borderRadius: isSendByMe ?
+          BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomLeft: Radius.circular(23)
+          ) :
+          BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomRight: Radius.circular(23)
+          ),
+        ),
+          child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),
+          ),
       ),
     );
   }

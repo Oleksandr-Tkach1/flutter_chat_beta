@@ -102,7 +102,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: 25),
                 GestureDetector(
                   onTap: (){
-                  //  TODO
+                    signIn();
                   },
                   child: Container(
                     alignment: Alignment.center,

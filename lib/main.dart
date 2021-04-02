@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xff007ef4),
-        scaffoldBackgroundColor: Color(0xff3b3a3a),
+        scaffoldBackgroundColor: Color(0xff282727),
         primarySwatch: Colors.blue,
       ),
       home: userIsLoggedIn == null ? Authenticate() : ChatRoomsScreen(),
