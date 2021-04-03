@@ -57,28 +57,13 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          padding: EdgeInsets.only(right: 15),
-          child: Center(
-              child: Text('Your chats',style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,)
-              ),
+          padding: EdgeInsets.only(left: 60),
+          child: Text('Your chats',style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,)
           ),
         ),
-        actions: [
-          GestureDetector(
-            onTap: (){
-              authMethods.signOut();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Container(
-              padding: EdgeInsets.only(right: 15),
-              child:
-                Icon(Icons.exit_to_app,color: Colors.white,size: 26),
-            ),
-          ),
-        ],
       ),
       body: chatRoomList(),
-      drawer: drawerStyle(),
+      drawer: drawerStyle(context),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white, size: 45,
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_beta/helper/authenticate.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
+import 'package:flutter_chat_beta/services/auth.dart';
 
 Widget appBarMain(BuildContext context) {
   return AppBar(
@@ -33,7 +35,8 @@ TextStyle simpleTextFieldStyle() {
   );
 }
 
-Drawer drawerStyle() {
+Widget drawerStyle(BuildContext context) {
+  AuthMethods authMethods = new AuthMethods();
   return Drawer(
     child: ListView(
       children: <Widget>[
@@ -57,7 +60,6 @@ Drawer drawerStyle() {
                 child: Text(Constants.myName, style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-              //TODO
               accountEmail:  Text(Constants.myEmail),
               currentAccountPicture: Container(
                 margin: EdgeInsets.only(right: 3),
@@ -79,7 +81,7 @@ Drawer drawerStyle() {
           color: Color(0xff282727),
           child: ListTile(
             contentPadding: EdgeInsets.only(left: 10),
-            title: Text("Баланс", style: TextStyle(color: Colors.white, fontSize: 18),
+            title: Text("Balance", style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             leading: Icon(Icons.monetization_on, color: Colors.white, size: 28),
             // onTap: () {
@@ -93,7 +95,7 @@ Drawer drawerStyle() {
         ),
         ListTile(
           contentPadding: EdgeInsets.only(left: 10),
-          title: Text("О себе", style: TextStyle(color: Colors.white, fontSize: 18),
+          title: Text("About myself", style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           leading: Icon(Icons.account_box, color: Colors.white, size: 28),
           // onTap: () {
@@ -104,22 +106,20 @@ Drawer drawerStyle() {
           // }
         ),
         ListTile(
-            title: Text("Настройки", style: TextStyle(color: Colors.white, fontSize: 18),
+            title: Text("Settings", style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             leading: Icon(Icons.settings, color: Colors.white, size: 28),
             contentPadding: EdgeInsets.only(left: 10),
             onTap: () {}),
         ListTile(
           contentPadding: EdgeInsets.only(left: 10),
-          title: Text("Выход", style: TextStyle(color: Colors.white, fontSize: 18),
+          title: Text("Exit", style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           leading: Icon(Icons.exit_to_app, color: Colors.white, size: 28,),
-          // onTap: () {
-          // Navigator.of(context).push(
-          // MaterialPageRoute(
-          // builder: (context) => AuthorrizationPageState()),
-          // );
-          // }
+          onTap: (){
+            authMethods.signOut();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate()));
+          },
         ),
       ],
     ),
