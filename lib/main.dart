@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        canvasColor: Color(0xff282727),
         primaryColor: Color(0xff007ef4),
         scaffoldBackgroundColor: Color(0xff282727),
         primarySwatch: Colors.blue,

@@ -52,11 +52,14 @@ Drawer drawerStyle() {
                 //borderRadius: BorderRadius.circular(40),
               ),
               //margin: EdgeInsets.symmetric(horizontal: 15),
-              accountName: Text(Constants.myName, style: TextStyle(color: Colors.white, fontSize: 20),
+              accountName: Container(
+                alignment: Alignment.bottomLeft,
+                child: Text(Constants.myName, style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
               ),
-              accountEmail: Text("home@dartflutter.ru"),
+              accountEmail:  Text("home@dartflutter.ru"),
               currentAccountPicture: Container(
-                margin: EdgeInsets.only(right: 5),
+                margin: EdgeInsets.only(right: 3),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: Image.network(
@@ -71,22 +74,27 @@ Drawer drawerStyle() {
             ),
           ),
         ),
-        ListTile(
-          contentPadding: EdgeInsets.only(left: 10),
-          title: Text("Баланс"),
-          leading: Icon(Icons.monetization_on),
-          // onTap: () {
-          // Navigator.of(context).push(
-          // MaterialPageRoute(
-          // // Временно
-          // builder: (context) => AuthorrizationPageState()),
-          // );
-          // }
+        Container(
+          color: Color(0xff282727),
+          child: ListTile(
+            contentPadding: EdgeInsets.only(left: 10),
+            title: Text("Баланс", style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            leading: Icon(Icons.monetization_on, color: Colors.white, size: 28),
+            // onTap: () {
+            // Navigator.of(context).push(
+            // MaterialPageRoute(
+            // // Временно
+            // builder: (context) => AuthorrizationPageState()),
+            // );
+            // }
+          ),
         ),
         ListTile(
           contentPadding: EdgeInsets.only(left: 10),
-          title: Text("О себе"),
-          leading: Icon(Icons.account_box),
+          title: Text("О себе", style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          leading: Icon(Icons.account_box, color: Colors.white, size: 28),
           // onTap: () {
           // Navigator.of(context).push(
           // MaterialPageRoute(
@@ -95,14 +103,16 @@ Drawer drawerStyle() {
           // }
         ),
         ListTile(
-            title: Text("Настройки"),
-            leading: Icon(Icons.settings),
+            title: Text("Настройки", style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+            leading: Icon(Icons.settings, color: Colors.white, size: 28),
             contentPadding: EdgeInsets.only(left: 10),
             onTap: () {}),
         ListTile(
           contentPadding: EdgeInsets.only(left: 10),
-          title: Text("Выход"),
-          leading: Icon(Icons.exit_to_app),
+          title: Text("Выход", style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          leading: Icon(Icons.exit_to_app, color: Colors.white, size: 28,),
           // onTap: () {
           // Navigator.of(context).push(
           // MaterialPageRoute(
