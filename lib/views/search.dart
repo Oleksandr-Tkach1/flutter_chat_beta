@@ -13,8 +13,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
-  TextEditingController searchTextEditingController =
-      new TextEditingController();
+  TextEditingController searchTextEditingController = new TextEditingController();
 
   QuerySnapshot searchSnapshot;
 

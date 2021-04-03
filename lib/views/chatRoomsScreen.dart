@@ -88,7 +88,7 @@ class ChatRoomTile extends StatelessWidget {
         ));
       },
       child: Container(
-        //color: Colors.black,
+        color: Color(0xff282727),
         padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
         child: Row(
           children: [

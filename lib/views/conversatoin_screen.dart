@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
   ConversationScreen(this.chatRoomId);
@@ -32,8 +33,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   sendMessage(){
-    if(messageController.text.isNotEmpty){
-      Map<String,dynamic> messageMap = {
+    if(messageController.text.isNotEmpty || messageController.text == null){
+      Map<String, dynamic> messageMap = {
         'message': messageController.text,
         'sendBy': Constants.myName,
         'time': DateTime.now().millisecondsSinceEpoch,
@@ -113,6 +114,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 }
+
 class MessageTile extends StatelessWidget {
   final String message;
   final bool isSendByMe;
@@ -148,7 +150,7 @@ class MessageTile extends StatelessWidget {
               bottomRight: Radius.circular(23)
           ),
         ),
-          child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),
+          child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
     );

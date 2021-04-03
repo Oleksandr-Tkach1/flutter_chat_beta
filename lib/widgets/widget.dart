@@ -52,9 +52,7 @@ Widget drawerStyle(BuildContext context) {
                   const Color(0xff1e90ff),
                   const Color(0xff00bfff),
                 ]),
-                //borderRadius: BorderRadius.circular(40),
               ),
-              //margin: EdgeInsets.symmetric(horizontal: 15),
               accountName: Container(
                 alignment: Alignment.bottomLeft,
                 child: Text(Constants.myName, style: TextStyle(color: Colors.white, fontSize: 20),
