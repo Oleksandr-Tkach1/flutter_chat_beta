@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
-import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
-import 'package:flutter_chat_beta/widgets/widget.dart';
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
   ConversationScreen(this.chatRoomId);
@@ -18,18 +16,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Stream chatMessagesStream;
 
   Widget ChatMessageList() {
-    return StreamBuilder(
-        stream: chatMessagesStream,
-        builder: (BuildContext  context, snapshot) {
-          return snapshot.hasData ? ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                return MessageTile (snapshot.data.docs[index].data()["message"], snapshot.data.docs[index].data()["sendBy"] == Constants.myName);
-                // return Container(
-                //   child: Text(messages, style: TextStyle(fontSize: 20, color: Colors.white),),
-                // );
-              }): Container();
-        }
+    return Container(
+      padding: EdgeInsets.only(bottom: 80),
+      child: StreamBuilder(
+          stream: chatMessagesStream,
+          builder: (BuildContext  context, snapshot) {
+            return snapshot.hasData ? ListView.builder(
+                itemCount: snapshot.data.docs.length,
+                itemBuilder: (context, index) {
+                  return MessageTile (snapshot.data.docs[index].data()["message"], snapshot.data.docs[index].data()["sendBy"] == Constants.myName);
+                }): Container();
+          }
+      ),
     );
   }
 
@@ -59,7 +57,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //title: Text(),
+        title: Text(''),
       ),
       body: Container(
         child: Stack(
@@ -68,7 +66,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(
-                color: Color(0x54ffffff),
+                color: Color(0xFF444141),
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: [
@@ -151,8 +149,8 @@ class MessageTile extends StatelessWidget {
           ),
         ),
           child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),
+            ),
           ),
-      ),
     );
   }
 }
