@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
@@ -57,7 +58,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain(context),
+      appBar: AppBar(
+        //title: Text(),
+      ),
       body: Container(
         child: Stack(
           children: [

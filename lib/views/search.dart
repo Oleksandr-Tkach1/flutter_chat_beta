@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
-import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 import 'chatRoomsScreen.dart';
@@ -57,16 +56,14 @@ class _SearchState extends State<Search> {
         'chatrooId': chatRoomId
       };
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
+      Navigator.push(context, MaterialPageRoute(
           builder: (context) => ConversationScreen(
             chatRoomId,
           ),
         ),
       );
     } else {
-      print('you cannot send message  to yourself');
+      print('you cannot send message to yourself');
     }
   }
 
@@ -106,6 +103,7 @@ class _SearchState extends State<Search> {
                   fontSize: 16,
                 ),
               ),
+              margin: EdgeInsets.symmetric(vertical: 10),
             ),
           ),
         ],

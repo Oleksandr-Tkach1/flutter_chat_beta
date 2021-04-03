@@ -7,6 +7,7 @@ import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/views/search.dart';
+import 'package:flutter_chat_beta/widgets/widget.dart';
 class ChatRoomsScreen extends StatefulWidget {
   @override
   _ChatRoomsScreenState createState() => _ChatRoomsScreenState();
@@ -76,6 +77,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
         ],
       ),
       body: chatRoomList(),
+      drawer: drawerStyle(),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add, color: Colors.white, size: 45,
         ),
