@@ -57,7 +57,8 @@ Drawer drawerStyle() {
                 child: Text(Constants.myName, style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-              accountEmail:  Text("home@dartflutter.ru"),
+              //TODO
+              accountEmail:  Text(Constants.myEmail),
               currentAccountPicture: Container(
                 margin: EdgeInsets.only(right: 3),
                 decoration: BoxDecoration(

@@ -44,7 +44,8 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
 
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    databaseMethods.getChatRooms(Constants.myName).then((value){
+    Constants.myEmail = await HelperFunctions.getUserEmailSharedPreference();
+    databaseMethods.getChatRooms(Constants.myName, Constants.myEmail).then((value){
       setState(() {
         chatRoomsStream = value;
       });
