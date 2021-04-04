@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 import 'chatRoomsScreen.dart';
-import 'conversatoin_screen.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -46,26 +44,6 @@ class _SearchState extends State<Search> {
     });
   }
 
-  createChatRoomStartConversation({String userName}) {
-    if (userName != Constants.myName) {
-      String chatRoomId = getChatRoomId(userName, Constants.myName);
-      List<String> users = [userName, Constants.myName];
-      Map<String, dynamic> chatRoomMap = {
-        'users': users,
-        'chatrooId': chatRoomId
-      };
-      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context) => ConversationScreen(
-            chatRoomId,
-          ),
-        ),
-      );
-    } else {
-      print('you cannot send message to yourself');
-    }
-  }
-
   Widget SearchedItemTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -82,16 +60,24 @@ class _SearchState extends State<Search> {
                 userEmail,
                 style: simpleTextFieldStyle(),
               ),
+              //Divider(color: Colors.white, height: 20,),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
           Spacer(),
           GestureDetector(
             onTap: () {
-              createChatRoomStartConversation(userName: userName);
+              createChatRoomStartConversation(userName: userName, context: context);
             },
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                gradient: LinearGradient(colors: [
+                  const Color(0xff6495ed),
+                  const Color(0xff1e90ff),
+                  const Color(0xff00bfff),
+                ]),
                 borderRadius: BorderRadius.circular(30),
               ),
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 11),
@@ -176,8 +162,9 @@ class _SearchState extends State<Search> {
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(colors: [
-                          const Color(0x36ffffff),
-                          const Color(0x0fffffff),
+                          const Color(0xff6495ed),
+                          const Color(0xff1e90ff),
+                          const Color(0xff00bfff),
                         ]),
                         borderRadius: BorderRadius.circular(40),
                       ),

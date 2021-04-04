@@ -27,7 +27,7 @@ class _SignInState extends State<SignIn> {
     if(formKey.currentState.validate()){
       HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
 
-      databaseMethods.getUserByUserEmail(emailTextEditingController.text)..then((val){
+      databaseMethods.getUserByUserEmail(emailTextEditingController.text).then((val){
         snapshotUserInfo = val;
         HelperFunctions.saveUserNameSharedPreference(snapshotUserInfo.docs[0].data()['name']);
       });

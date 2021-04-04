@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/authenticate.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
+import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
+import 'package:flutter_chat_beta/views/search.dart';
 
 Widget appBarMain(BuildContext context) {
   return AppBar(
@@ -143,4 +146,24 @@ Widget drawerStyle(BuildContext context) {
       ],
     ),
   );
+}
+
+createChatRoomStartConversation({String userName, BuildContext context}) {
+  if (userName != Constants.myName) {
+    String chatRoomId = getChatRoomId(userName, Constants.myName);
+    List<String> users = [userName, Constants.myName];
+    Map<String, dynamic> chatRoomMap = {
+      'users': users,
+      'chatrooId': chatRoomId
+    };
+    DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => ConversationScreen(
+        chatRoomId,
+      ),
+    ),
+    );
+  } else {
+    print('you cannot send message to yourself');
+  }
 }

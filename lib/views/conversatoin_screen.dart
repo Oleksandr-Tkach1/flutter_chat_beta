@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/widgets/widget.dart';
 
 class ConversationScreen extends StatefulWidget {
+  //final String userName; // не нужно
   final String chatRoomId;
-  ConversationScreen(this.chatRoomId);
+  ConversationScreen(
+      this.chatRoomId,
+      //this.userName
+      );
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -16,6 +22,26 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageController = new TextEditingController();
   Stream chatMessagesStream;
 
+  //TODO
+  // Stream chatRoomsStream;
+  //
+  // Widget userNameList() {
+  //   return StreamBuilder(
+  //       stream: chatRoomsStream,
+  //       builder: (BuildContext  context, snapshot) {
+  //         return snapshot.hasData ? ListView.builder(
+  //             itemCount: snapshot.data.docs.length,
+  //             itemBuilder: (context, index) {
+  //               return ConversationScreen (snapshot.data.docs[index].data()["chatrooId"]
+  //               //Для показа (изменение имени)
+  //                   .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
+  //               );
+  //             }) : Container();
+  //       }
+  //   );
+  // }
+  
+  
   Widget ChatMessageList() {
     return Container(
       padding: EdgeInsets.only(bottom: 80),
@@ -55,10 +81,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,{String userName}) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        //title: Text(userName),
       ),
       body: Container(
         child: Stack(
@@ -156,3 +182,7 @@ class MessageTile extends StatelessWidget {
     );
   }
 }
+
+// Widget userNameTile({String userName}){
+//
+// }
