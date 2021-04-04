@@ -84,7 +84,7 @@ class ChatRoomTile extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ConversationScreen(chatRoomId),
+            builder: (context) => ConversationScreen(chatRoomId, userName),
         ));
       },
       child: Container(

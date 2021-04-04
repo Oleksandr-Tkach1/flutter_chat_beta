@@ -18,19 +18,19 @@ class _SearchState extends State<Search> {
   Widget searchList() {
     return searchSnapshot != null && searchSnapshot.size > 0
         ? ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 392.7,
-            ),
-            child: ListView.builder(
-                itemCount: searchSnapshot.docs.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return SearchedItemTile(
-                    userName: searchSnapshot.docs[index].data()["name"],
-                    userEmail: searchSnapshot.docs[index].data()["email"],
-                  );
-                }),
-          )
+      constraints: BoxConstraints(
+        maxWidth: 392.7,
+      ),
+      child: ListView.builder(
+          itemCount: searchSnapshot.docs.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return SearchedItemTile(
+              userName: searchSnapshot.docs[index].data()["name"],
+              userEmail: searchSnapshot.docs[index].data()["email"],
+            );
+          }),
+    )
         : Container();
   }
 
@@ -69,7 +69,9 @@ class _SearchState extends State<Search> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              createChatRoomStartConversation(userName: userName, context: context);
+              createChatRoomStartConversation(
+                  userName: userName,
+                  userEmail: userEmail, context: context);
             },
             child: Container(
               decoration: BoxDecoration(

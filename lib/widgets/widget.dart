@@ -5,6 +5,7 @@ import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/views/search.dart';
+import 'dart:convert';
 
 Widget appBarMain(BuildContext context) {
   return AppBar(
@@ -148,10 +149,15 @@ Widget drawerStyle(BuildContext context) {
   );
 }
 
-createChatRoomStartConversation({String userName, BuildContext context}) {
+createChatRoomStartConversation({String userName, String userEmail, BuildContext context}) {
   if (userName != Constants.myName) {
     String chatRoomId = getChatRoomId(userName, Constants.myName);
-    List<String> users = [userName, Constants.myName];
+
+    String user = jsonEncode(User(userName, userEmail));
+    String me = jsonEncode(User(Constants.myName, Constants.myEmail));
+
+    List<String> users = [user, me];
+
     Map<String, dynamic> chatRoomMap = {
       'users': users,
       'chatrooId': chatRoomId
@@ -160,10 +166,28 @@ createChatRoomStartConversation({String userName, BuildContext context}) {
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => ConversationScreen(
         chatRoomId,
+        userName,
       ),
     ),
     );
   } else {
     print('you cannot send message to yourself');
   }
+}
+
+class User {
+  String userName;
+  String email;
+
+  User(this.userName, this.email);
+
+  User.fromJson(Map<String, dynamic> json)
+      : userName = json['userName'],
+        email = json['email'];
+
+  Map<String, dynamic> toJson() =>
+      {
+        'userName': userName,
+        'email': email,
+      };
 }

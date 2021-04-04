@@ -21,7 +21,7 @@ class DatabaseMethods {
     });
   }
 
-  createChatRoom(String chatRoomId, chatRoomMap) {
+   createChatRoom(String chatRoomId, chatRoomMap) {
     FirebaseFirestore.instance
         .collection('ChatRoom')
         .doc(chatRoomId)
@@ -52,9 +52,10 @@ class DatabaseMethods {
   }
 
   getChatRooms(String userName, String userEmail) async {
+    print(userEmail);
     return await FirebaseFirestore.instance
         .collection('ChatRoom')
-        .where('users', arrayContains: userName)
+        .where('users', arrayContains: userEmail)
         .snapshots();
   }
 }
