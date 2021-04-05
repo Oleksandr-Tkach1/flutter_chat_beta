@@ -6,6 +6,7 @@ import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/views/search.dart';
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 
 Widget appBarMain(BuildContext context) {
   return AppBar(
@@ -72,16 +73,14 @@ Widget drawerStyle(BuildContext context) {
                   ),
               ),
               currentAccountPicture: Container(
-                margin: EdgeInsets.only(right: 3),
+                height: 45,
+                width: 45,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: Image.network(
-                            'https://www.zastavki.com/pictures/1920x1200/2011/Animals_Cats_Cat_in_the_glasses_032992_.jpg')
-                        .image,
-                    fit: BoxFit.cover,
-                  ),
-                  shape: BoxShape.circle,
-                  color: Colors.white,
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                child: Text('${Constants.myName.substring(0, 1).toUpperCase()}', style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),
@@ -151,16 +150,33 @@ Widget drawerStyle(BuildContext context) {
 
 createChatRoomStartConversation({String userName, String userEmail, BuildContext context}) {
   if (userName != Constants.myName) {
-    String chatRoomId = getChatRoomId(userName, Constants.myName);
+    //String chatRoomId = getChatRoomId(userName, Constants.myName);
+    var chatRoomId = Uuid().v1();
 
-    String user = jsonEncode(User(userName, userEmail));
-    String me = jsonEncode(User(Constants.myName, Constants.myEmail));
+    //String user = jsonEncode(User(userName, userEmail));
+    //String me = jsonEncode(User(Constants.myName, Constants.myEmail));
 
-    List<String> users = [user, me];
+    //List<User> chatUsers =(json.decode('[{"userName":"Sasha","email":"k@gmail.com"},{"userName":"4ELOVEK","email":"sasha228023@gmail.com"}]') as List).map((i) => User.fromJson(i)).toList();
+
+    //User me;
+    //chatUsers.forEach((chatUser) {
+    //  if(chatUser.email != Constants.myEmail) {
+    //    me = chatUser;
+    //  }
+   // if(me != null) {
+   //   print('Ура я нашел своего юзера' + me.userName);
+   // } else {
+   //   print('Oy noy ((');
+   // }
+
+    //});
+    List<String> users = [userEmail, Constants.myEmail];
 
     Map<String, dynamic> chatRoomMap = {
+      'test' : 'Hello-World',
+      'chatName': userName +', '+ Constants.myName,
       'users': users,
-      'chatrooId': chatRoomId
+      'chatRoomId': chatRoomId
     };
     DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
     Navigator.push(context, MaterialPageRoute(

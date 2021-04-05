@@ -51,8 +51,9 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  getChatRooms(String userName, String userEmail) async {
+  getChatRooms(String userEmail) async {
     print(userEmail);
+
     return await FirebaseFirestore.instance
         .collection('ChatRoom')
         .where('users', arrayContains: userEmail)

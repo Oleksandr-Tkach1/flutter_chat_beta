@@ -26,12 +26,12 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
           return snapshot.hasData ? ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
-                return ChatRoomTile (snapshot.data.docs[index].data()["chatrooId"]
-                    //Для показа (изменение имени)
-                    .toString().replaceAll("_", "").replaceAll(Constants.myName, ""),
-                    snapshot.data.docs[index].data()["chatrooId"],
+                print('DEBUG DATA: ' + snapshot.data.docs[index].data().toString());
+                return ChatRoomTile (
+                  snapshot.data.docs[index].data()["chatName"],
+                  snapshot.data.docs[index].data()["chatRoomId"],
                 );
-              }) : Container();
+              }) : Text('No chats');
         }
     );
   }
@@ -45,7 +45,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
     Constants.myEmail = await HelperFunctions.getUserEmailSharedPreference();
-    databaseMethods.getChatRooms(Constants.myName, Constants.myEmail).then((value){
+    databaseMethods.getChatRooms(Constants.myEmail).then((value){
       setState(() {
         chatRoomsStream = value;
       });
