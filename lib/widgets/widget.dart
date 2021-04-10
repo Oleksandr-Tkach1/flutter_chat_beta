@@ -4,8 +4,6 @@ import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
-import 'package:flutter_chat_beta/views/search.dart';
-import 'dart:convert';
 import 'package:uuid/uuid.dart';
 
 Widget appBarMain(BuildContext context) {
@@ -176,7 +174,7 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
       'test' : 'Hello-World',
       'chatName': userName +', '+ Constants.myName,
       'users': users,
-      'chatRoomId': chatRoomId
+      'chatRoomId': chatRoomId,
     };
     DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
     Navigator.push(context, MaterialPageRoute(

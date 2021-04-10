@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HelperFunctions{
@@ -33,3 +34,9 @@ class HelperFunctions{
     return prefs.getString(sharedPreferenceUserEmailKey);
   }
 }
+// Future <void> sendNotification(String promoId, String promoDesc) async {
+//   final results = await FirebaseFunctions.instance
+//       .httpsCallable(functionName: 'sendNotification')
+//       .call({"your_param_sent_from_the_client": param});
+//   print(results);
+// }
