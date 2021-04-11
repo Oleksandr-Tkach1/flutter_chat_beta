@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
@@ -56,6 +60,30 @@ class _ConversationScreenState extends State<ConversationScreen> {
     super.initState();
   }
 
+  // Method for selecting a picture from the gallery
+  File _image;
+
+  Future getImage() async {
+    final image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image as File;
+    });
+  }
+
+  //upload image to FirebaseStorage
+  File _imageFile;
+
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = basename(_imageFile.path);
+    Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,9 +98,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
               alignment: Alignment.bottomCenter,
               child: Container(
                 color: Color(0xFF444141),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
                 child: Row(
                   children: [
+                    SizedBox(width: 5,),
                     Expanded(
                       child: TextField(
                         controller: messageController,
@@ -84,6 +113,27 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         ),
                       ),
                     ),
+                    // TODO Button add image
+                    GestureDetector(
+                      onTap: (){
+                        getImage();
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 45,
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                            const Color(0xff6495ed),
+                            const Color(0xff1e90ff),
+                            const Color(0xff00bfff),
+                          ]),
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Icon(Icons.image_outlined, color: Colors.white, size: 30,),
+                      ),
+                    ),
+                    SizedBox(width: 10,),
                     GestureDetector(
                       onTap: (){
                         sendMessage();

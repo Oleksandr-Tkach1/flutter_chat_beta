@@ -57,7 +57,7 @@ Widget drawerStyle(BuildContext context) {
                 ]),
               ),
               accountName: Container(
-                padding: EdgeInsets.only(left: 5, top: 33),
+                padding: EdgeInsets.only(left: 5, top: 31),
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   Constants.myName,
@@ -171,7 +171,6 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
     List<String> users = [userEmail, Constants.myEmail];
 
     Map<String, dynamic> chatRoomMap = {
-      'test' : 'Hello-World',
       'chatName': userName +', '+ Constants.myName,
       'users': users,
       'chatRoomId': chatRoomId,
