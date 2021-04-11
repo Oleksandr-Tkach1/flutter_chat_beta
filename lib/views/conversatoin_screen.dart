@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -31,16 +32,25 @@ class _ConversationScreenState extends State<ConversationScreen> {
             return snapshot.hasData ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  return MessageTile (snapshot.data.docs[index].data()["message"], snapshot.data.docs[index].data()["sendBy"] == Constants.myName);
+                  return MessageTile (
+                      snapshot.data.docs[index].data()["message"],
+                      snapshot.data.docs[index].data()["sendBy"] == Constants.myName,
+                      snapshot.data.docs[index].data()["image"]
+                  );
                 }): Container();
           }
       ),
     );
   }
 
-  sendMessage(){
+  sendMessage(File imageFile, BuildContext context) async {
+    var imageUrl;
+    if(_imageFile != null) {
+      imageUrl = await uploadImageToFirebase(context);
+    }
     if(messageController.text.isNotEmpty || messageController.text == null){
       Map<String, dynamic> messageMap = {
+        'image': imageUrl, //test
         'message': messageController.text,
         'sendBy': Constants.myName,
         'time': DateTime.now().millisecondsSinceEpoch,
@@ -61,26 +71,24 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   // Method for selecting a picture from the gallery
-  File _image;
+  File _imageFile;
 
-  Future getImage() async {
-    final image = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+  final picker = ImagePicker();
+
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      _image = image as File;
+      _imageFile = File(pickedFile.path);
     });
   }
 
-  //upload image to FirebaseStorage
-  File _imageFile;
-
-  Future uploadImageToFirebase(BuildContext context) async {
+  // upload image to FirebaseStorage
+  Future<String> uploadImageToFirebase(BuildContext context) async {
     String fileName = basename(_imageFile.path);
-    Reference firebaseStorageRef = FirebaseStorage.instance.ref().child('uploads/$fileName');
+    Reference firebaseStorageRef = await FirebaseStorage.instance.ref().child('uploads/$fileName');
     UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
     TaskSnapshot taskSnapshot = await uploadTask;
-    taskSnapshot.ref.getDownloadURL().then(
-          (value) => print("Done: $value"),
-    );
+    return taskSnapshot.ref.getDownloadURL();
   }
 
 
@@ -116,7 +124,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     // TODO Button add image
                     GestureDetector(
                       onTap: (){
-                        getImage();
+                        pickImage();
                       },
                       child: Container(
                         height: 45,
@@ -136,7 +144,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: (){
-                        sendMessage();
+                        sendMessage(_imageFile, context);
+                        FocusScope.of(context).unfocus();
                       },
                       child: Container(
                         height: 45,
@@ -169,42 +178,56 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
 class MessageTile extends StatelessWidget {
   final String message;
+  final String imageUrl;
   final bool isSendByMe;
-  MessageTile(this.message, this.isSendByMe);
+  MessageTile(
+      this.message,
+      this.isSendByMe,
+      this.imageUrl,
+      );
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: isSendByMe ? 0 : 14, right: isSendByMe ? 14 : 0),
+      padding: EdgeInsets.only(
+          left: isSendByMe ? 0 : 14, right: isSendByMe ? 14 : 0),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        //height: MediaQuery.of(context).size.width - 4,
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: isSendByMe ? [
-              const Color(0xff007ef4),
-              const Color(0xff2a75bc),
-            ] : [
-              const Color(0x1affffff),
-              const Color(0x1affffff),
-            ],
+            colors: isSendByMe
+                ? [
+                    const Color(0xff007ef4),
+                    const Color(0xff2a75bc),
+                  ]
+                : [
+                    const Color(0x1affffff),
+                    const Color(0x1affffff),
+                  ],
           ),
-          borderRadius: isSendByMe ?
-          BorderRadius.only(
-              topLeft: Radius.circular(23),
-              topRight: Radius.circular(23),
-              bottomLeft: Radius.circular(23)
-          ) :
-          BorderRadius.only(
-              topLeft: Radius.circular(23),
-              topRight: Radius.circular(23),
-              bottomRight: Radius.circular(23)
-          ),
+          borderRadius: isSendByMe
+              ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23))
+              : BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23)),
         ),
-          child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18),
+        child: Column(
+          children: [
+            Text(
+              message,
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
-          ),
+            imageUrl != null && imageUrl.isNotEmpty ? Image.network(imageUrl) : SizedBox(),
+          ],
+        ),
+      ),
     );
   }
 }

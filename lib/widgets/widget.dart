@@ -8,9 +8,7 @@ import 'package:uuid/uuid.dart';
 
 Widget appBarMain(BuildContext context) {
   return AppBar(
-    title: Text(
-      'Chat',
-      style: TextStyle(fontSize: 25),
+    title: Text('Chat', style: TextStyle(fontSize: 25),
     ),
   );
 }
