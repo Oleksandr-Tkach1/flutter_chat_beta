@@ -30,6 +30,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                 return ChatRoomTile (
                   snapshot.data.docs[index].data()["chatName"],
                   snapshot.data.docs[index].data()["chatRoomId"],
+                  snapshot.data.docs[index].data()["chatName"],
                 );
               }) : Text('No chats');
         }
@@ -78,13 +79,15 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
 class ChatRoomTile extends StatelessWidget {
   final String userName;
   final String chatRoomId;
-  ChatRoomTile(this.userName, this.chatRoomId);
+  final String chatName;
+
+  ChatRoomTile(this.userName, this.chatRoomId, this.chatName);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ConversationScreen(chatRoomId, userName),
+            builder: (context) => ConversationScreen(chatRoomId, userName, chatName),
         ));
       },
       child: Container(

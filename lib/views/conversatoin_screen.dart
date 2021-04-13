@@ -10,8 +10,9 @@ import 'package:image_picker/image_picker.dart';
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
   final String userName;
+  final String chatName;
 
-  ConversationScreen(this.chatRoomId, this.userName);
+  ConversationScreen(this.chatRoomId, this.userName, this.chatName);
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -96,7 +97,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: userNameTile(userName: widget.userName ?? 'no name'),
+        title: userNameTile(chatName: widget.chatName ?? 'no name'),
       ),
       body: Container(
         child: Stack(
@@ -193,7 +194,7 @@ class MessageTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(
           left: isSendByMe ? 0 : 14, right: isSendByMe ? 14 : 0),
-      width: MediaQuery.of(context).size.width,
+      //width: MediaQuery.of(context).size.width - 200,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         width: MediaQuery.of(context).size.width - 200,
@@ -224,7 +225,7 @@ class MessageTile extends StatelessWidget {
         child: Column(
           children: [
             imageUrl != null && imageUrl.isNotEmpty
-                ? ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(imageUrl, width: 200, height: 200,))
+                ? ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(imageUrl, width: 200, height: 200,),)
                 : SizedBox(),
 
             imageUrl != null && imageUrl.isNotEmpty
@@ -237,6 +238,6 @@ class MessageTile extends StatelessWidget {
   }
 }
 
-Widget userNameTile ({String userName}){
-  return Text(userName);
+Widget userNameTile ({String chatName}){
+  return Text(chatName);
 }

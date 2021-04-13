@@ -12,10 +12,11 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
+  TextEditingController chatNameController = new TextEditingController();
 
   QuerySnapshot searchSnapshot;
 
-  Widget searchList() {
+  Widget searchList(BuildContext globalContext) {
     return searchSnapshot != null && searchSnapshot.size > 0
         ? ConstrainedBox(
       constraints: BoxConstraints(
@@ -25,7 +26,8 @@ class _SearchState extends State<Search> {
           itemCount: searchSnapshot.docs.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return SearchedItemTile(
+            return searchedItemTile(
+              globalContext,
               userName: searchSnapshot.docs[index].data()["name"],
               userEmail: searchSnapshot.docs[index].data()["email"],
             );
@@ -44,7 +46,7 @@ class _SearchState extends State<Search> {
     });
   }
 
-  Widget SearchedItemTile({String userName, String userEmail}) {
+  Widget searchedItemTile(BuildContext globalContext, {String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.only(left: 16.0, right: 16.0),
       child: Row(
@@ -69,11 +71,19 @@ class _SearchState extends State<Search> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              createChatRoomStartConversation(
-                  userName: userName,
-                  userEmail: userEmail, context: context);
+              Function onPressed = onApproveButtonClick(userName, userEmail);
+
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return buildNameRequestDialog(
+                        globalContext,
+                        chatNameController,
+                        onPressed);
+                  }
+              );
             },
-            child: Container(
+            child:  Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
                   const Color(0xff6495ed),
@@ -96,6 +106,18 @@ class _SearchState extends State<Search> {
         ],
       ),
     );
+  }
+
+  Function onApproveButtonClick(String userName, String userEmail) {
+    return () {
+      Navigator.of(context).pop();
+      createChatRoomStartConversation(
+        userName: userName,
+        userEmail: userEmail,
+        context: context,
+        inputChatName: chatNameController.text,
+      );
+    };
   }
 
   @override
@@ -157,6 +179,7 @@ class _SearchState extends State<Search> {
                   GestureDetector(
                     onTap: () {
                       initiateSearch();
+                      FocusScope.of(context).unfocus();
                     },
                     child: Container(
                       height: 40,
@@ -182,7 +205,7 @@ class _SearchState extends State<Search> {
             SizedBox(
               height: 20,
             ),
-            searchList(),
+            searchList(context),
           ],
         ),
       ),

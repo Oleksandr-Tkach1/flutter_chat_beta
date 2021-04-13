@@ -144,7 +144,7 @@ Widget drawerStyle(BuildContext context) {
   );
 }
 
-createChatRoomStartConversation({String userName, String userEmail, BuildContext context}) {
+createChatRoomStartConversation({String userName, String userEmail, BuildContext context, String inputChatName}) {
   if (userName != Constants.myName) {
     //String chatRoomId = getChatRoomId(userName, Constants.myName);
     var chatRoomId = Uuid().v1();
@@ -169,7 +169,7 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
     List<String> users = [userEmail, Constants.myEmail];
 
     Map<String, dynamic> chatRoomMap = {
-      'chatName': userName +', '+ Constants.myName,
+      'chatName':  inputChatName != null && inputChatName.isNotEmpty ? inputChatName: (userName +', '+ Constants.myName),
       'users': users,
       'chatRoomId': chatRoomId,
     };
@@ -178,12 +178,55 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
       builder: (context) => ConversationScreen(
         chatRoomId,
         userName,
+        inputChatName != null && inputChatName.isNotEmpty ? inputChatName : (userName +', '+ Constants.myName),
       ),
     ),
     );
   } else {
     print('you cannot send message to yourself');
   }
+}
+
+AlertDialog buildNameRequestDialog(BuildContext context, TextEditingController userChatNameTextEditingController, Function onPressed){
+  final formKey = GlobalKey<FormState>();
+
+  // chatUserName(){
+  //   if(formKey.currentState.validate()){
+  //     Navigator.of(context).pop();
+  //   }
+  // };
+
+  return AlertDialog(
+    backgroundColor: Color(0xff282727),
+    title: Text('Do you want to rename the chat?', style: TextStyle(color: Colors.white,)),
+    content: Container(
+      child: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Form(
+              key: formKey,
+              child: TextFormField(
+                validator: (val){
+                  return val.isEmpty || val.length > 12 ? 'Please provide a valid Username' : null;
+                },
+                controller: userChatNameTextEditingController,
+                style: simpleTextFieldStyle(),
+                decoration: textFieldInputDecoration('Chat name'),
+              ),
+            ),
+            SizedBox(height: 5,),
+            Text('If you do not specify the name of the chat, the chat will be named after the username', style: TextStyle(color: Colors.white,)),
+          ],
+        ),
+      ),
+    ),
+    actions: <Widget>[
+      TextButton(
+        child: Text('Approve'),
+        onPressed: () => onPressed(),
+      ),
+    ],
+  );
 }
 
 class User {
