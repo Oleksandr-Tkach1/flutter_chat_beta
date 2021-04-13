@@ -144,7 +144,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: (){
-                        sendMessage(_imageFile, context);
+                        sendMessage(
+                            _imageFile,
+                            context
+                        );
                         FocusScope.of(context).unfocus();
                       },
                       child: Container(
@@ -193,7 +196,7 @@ class MessageTile extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        //height: MediaQuery.of(context).size.width - 4,
+        width: MediaQuery.of(context).size.width - 200,
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
         decoration: BoxDecoration(
@@ -220,11 +223,13 @@ class MessageTile extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(
-              message,
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            imageUrl != null && imageUrl.isNotEmpty ? Image.network(imageUrl) : SizedBox(),
+            imageUrl != null && imageUrl.isNotEmpty
+                ? ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(imageUrl, width: 200, height: 200,))
+                : SizedBox(),
+
+            imageUrl != null && imageUrl.isNotEmpty
+                ? Align(alignment: Alignment.centerLeft, child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),),)
+                : Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),),
           ],
         ),
       ),
