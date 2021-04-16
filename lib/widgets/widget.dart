@@ -124,7 +124,7 @@ Widget drawerStyle(BuildContext context) {
             contentPadding: EdgeInsets.only(left: 10),
             onTap: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Settings()),
+                MaterialPageRoute(builder: (context) => SearchList()),
               );
             }),
         ListTile(
