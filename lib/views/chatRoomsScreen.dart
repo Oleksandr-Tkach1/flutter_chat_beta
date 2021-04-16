@@ -57,10 +57,30 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-          padding: EdgeInsets.only(left: 60),
-          child: Text('Your chats',style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold,)
-          ),
+        title: Row(
+          children: [
+            SizedBox(width: 10,),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(top: 3),
+                constraints: BoxConstraints(maxHeight: 55),
+                child: TextField(
+                  //maxLines: 2,
+                  //TODO
+                  //controller: messageController,
+                  style: TextStyle(color: Colors.white,fontSize: 20),
+                  decoration: InputDecoration(
+                    hintText: 'Find chat...',
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              child: Icon(Icons.search, size: 26,),
+            ),
+          ],
         ),
       ),
       body: chatRoomList(),

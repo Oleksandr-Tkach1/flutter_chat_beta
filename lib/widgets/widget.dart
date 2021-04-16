@@ -4,6 +4,7 @@ import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
+import 'package:flutter_chat_beta/views/settings.dart';
 import 'package:uuid/uuid.dart';
 
 Widget appBarMain(BuildContext context) {
@@ -121,7 +122,11 @@ Widget drawerStyle(BuildContext context) {
             ),
             leading: Icon(Icons.settings, color: Colors.white, size: 28),
             contentPadding: EdgeInsets.only(left: 10),
-            onTap: () {}),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Settings()),
+              );
+            }),
         ListTile(
           contentPadding: EdgeInsets.only(left: 10),
           title: Text(

@@ -38,7 +38,7 @@ class _SearchState extends State<Search> {
   }
 
   initiateSearch() {
-    if(databaseMethods.getUserByUsername(searchTextEditingController.text) != null){
+    if(databaseMethods.getUserByUsername != null){
       databaseMethods.getUserByUsername(searchTextEditingController.text).then((val) {
         setState(() {
           searchSnapshot = val;
