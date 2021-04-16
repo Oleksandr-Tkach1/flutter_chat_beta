@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
 import 'chatRoomsScreen.dart';
 
@@ -37,13 +38,15 @@ class _SearchState extends State<Search> {
   }
 
   initiateSearch() {
-    databaseMethods
-        .getUserByUsername(searchTextEditingController.text)
-        .then((val) {
-      setState(() {
-        searchSnapshot = val;
+    if(databaseMethods.getUserByUsername(searchTextEditingController.text) != null){
+      databaseMethods.getUserByUsername(searchTextEditingController.text).then((val) {
+        setState(() {
+          searchSnapshot = val;
+        });
       });
-    });
+    }else{
+      Center(child: Text('User not found', style: TextStyle(fontSize: 25, color: Colors.white),));
+    }
   }
 
   Widget searchedItemTile(BuildContext globalContext, {String userName, String userEmail}) {
@@ -111,12 +114,25 @@ class _SearchState extends State<Search> {
   Function onApproveButtonClick(String userName, String userEmail) {
     return () {
       Navigator.of(context).pop();
-      createChatRoomStartConversation(
-        userName: userName,
-        userEmail: userEmail,
-        context: context,
-        inputChatName: chatNameController.text,
-      );
+      databaseMethods
+          .getChatRoomByUserEmail(userEmail)
+          .then((val) {
+            QuerySnapshot chats = val;
+            // значит чат с юзером есть
+            if(chats.docs.isNotEmpty) {
+              QueryDocumentSnapshot chat = chats.docs[0];
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ConversationScreen(chat.data()["chatRoomId"], userName, chat.data()["chatName"]),
+              ));
+            } else {
+              createChatRoomStartConversation(
+                userName: userName,
+                userEmail: userEmail,
+                context: context,
+                inputChatName: chatNameController.text,
+              );
+            }
+      });
     };
   }
 
@@ -157,7 +173,6 @@ class _SearchState extends State<Search> {
             }),
       ),
       body: Container(
-        //TODO
         child: Column(
           children: [
             Container(

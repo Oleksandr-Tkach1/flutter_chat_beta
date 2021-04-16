@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_chat_beta/helper/constants.dart';
 
 class DatabaseMethods {
   getUserByUsername(String username) async {
@@ -53,10 +54,16 @@ class DatabaseMethods {
 
   getChatRooms(String userEmail) async {
     print(userEmail);
-
     return await FirebaseFirestore.instance
         .collection('ChatRoom')
         .where('users', arrayContains: userEmail)
         .snapshots();
+  }
+
+  getChatRoomByUserEmail(String userEmail) async {
+    print(userEmail);
+    return await FirebaseFirestore.instance
+        .collection('ChatRoom')
+        .where('users', arrayContainsAny: [userEmail, Constants.myEmail]).get();
   }
 }

@@ -178,6 +178,7 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
       builder: (context) => ConversationScreen(
         chatRoomId,
         userName,
+
         inputChatName != null && inputChatName.isNotEmpty ? inputChatName : (userName +', '+ Constants.myName),
       ),
     ),

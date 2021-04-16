@@ -32,7 +32,7 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                   snapshot.data.docs[index].data()["chatRoomId"],
                   snapshot.data.docs[index].data()["chatName"],
                 );
-              }) : Text('No chats');
+              }) : Center(child: Text('No chats', style: TextStyle(fontSize: 25, color: Colors.white),));
         }
     );
   }

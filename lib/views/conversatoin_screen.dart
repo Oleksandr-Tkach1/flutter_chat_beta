@@ -112,13 +112,18 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   children: [
                     SizedBox(width: 5,),
                     Expanded(
-                      child: TextField(
-                        controller: messageController,
-                        style: TextStyle(color: Colors.white,fontSize: 20),
-                        decoration: InputDecoration(
-                          hintText: 'Write a message...',
-                          hintStyle: TextStyle(color: Colors.white),
-                          border: InputBorder.none,
+                      child: Container(
+                        padding: EdgeInsets.only(top: 3),
+                        constraints: BoxConstraints(maxHeight: 55),
+                        child: TextField(
+                          maxLines: 2,
+                          controller: messageController,
+                          style: TextStyle(color: Colors.white,fontSize: 20),
+                          decoration: InputDecoration(
+                            hintText: 'Write a message...',
+                            hintStyle: TextStyle(color: Colors.white),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
@@ -128,8 +133,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         pickImage();
                       },
                       child: Container(
-                        height: 45,
-                        width: 45,
+                        height: 50,
+                        width: 50,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(colors: [
@@ -139,7 +144,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           ]),
                           borderRadius: BorderRadius.circular(40),
                         ),
-                        child: Icon(Icons.image_outlined, color: Colors.white, size: 30,),
+                        child: Icon(Icons.image_outlined, color: Colors.white, size: 32,),
                       ),
                     ),
                     SizedBox(width: 10,),
@@ -152,8 +157,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         FocusScope.of(context).unfocus();
                       },
                       child: Container(
-                        height: 45,
-                        width: 45,
+                        height: 50,
+                        width: 50,
                         padding: EdgeInsets.all(5),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(colors: [
@@ -197,7 +202,8 @@ class MessageTile extends StatelessWidget {
       //width: MediaQuery.of(context).size.width - 200,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        width: MediaQuery.of(context).size.width - 200,
+        //width: MediaQuery.of(context).size.width - 200,
+        // constraints: BoxConstraints(maxWidth: 220),
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15),
         decoration: BoxDecoration(
@@ -225,12 +231,12 @@ class MessageTile extends StatelessWidget {
         child: Column(
           children: [
             imageUrl != null && imageUrl.isNotEmpty
-                ? ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(imageUrl, width: 200, height: 200,),)
+                ? ClipRRect(borderRadius: BorderRadius.circular(20), child: Image.network(imageUrl, width: 160, height: 160,),)
                 : SizedBox(),
 
             imageUrl != null && imageUrl.isNotEmpty
-                ? Align(alignment: Alignment.centerLeft, child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),),)
-                : Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),),
+                ? Container(constraints: BoxConstraints(maxWidth: 120),child: Align(alignment: Alignment.centerLeft, child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),),))
+                : Container(constraints: BoxConstraints(maxWidth: 220),child: Text(message, style: TextStyle(color: Colors.white, fontSize: 18,),)),
           ],
         ),
       ),
