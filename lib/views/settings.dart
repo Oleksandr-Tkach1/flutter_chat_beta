@@ -17,6 +17,7 @@ class _SearchListState extends State<SearchList> {
   bool _isSearching;
   String _searchText = "";
 
+  // для показа ответов поиска
   _SearchListState() {
     _searchQuery.addListener(() {
       if (_searchQuery.text.isEmpty) {
@@ -40,7 +41,7 @@ class _SearchListState extends State<SearchList> {
     init();
   }
 
-  void init() {
+  init() {
     _list = List();
     _list.add("Google");
     _list.add("IOS");
@@ -71,6 +72,7 @@ class _SearchListState extends State<SearchList> {
     return _list.map((contact) => ChildItem(contact)).toList();
   }
 
+  //TODO
   List<ChildItem> _buildSearchList() {
     if (_searchText.isEmpty) {
       return _list.map((contact) => ChildItem(contact)).toList();
@@ -86,6 +88,7 @@ class _SearchListState extends State<SearchList> {
     }
   }
 
+  //TODO
   Widget buildBar(BuildContext context) {
     return AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
       IconButton(

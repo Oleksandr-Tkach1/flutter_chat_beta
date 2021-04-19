@@ -53,36 +53,51 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
     });
 }
 
+  void _handleSearchEnd() {
+    setState(() {
+      actionIcon = Icon(
+        Icons.search,
+        color: Colors.white,
+      );
+      appBarTitle = Text("Your chats", style: TextStyle(color: Colors.white, fontSize: 25,),
+      );
+      _isSearching = false;
+      _searchQuery.clear();
+    });
+  }
+  bool _isSearching;
+  final TextEditingController _searchQuery = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            SizedBox(width: 10,),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.only(top: 3),
-                constraints: BoxConstraints(maxHeight: 55),
-                child: TextField(
-                  //maxLines: 2,
-                  //TODO
-                  //controller: messageController,
-                  style: TextStyle(color: Colors.white,fontSize: 20),
-                  decoration: InputDecoration(
-                    hintText: 'Find chat...',
-                    hintStyle: TextStyle(color: Colors.white),
-                    border: InputBorder.none,
+      appBar: AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
+        IconButton(
+          icon: actionIcon,
+          onPressed: () {
+            setState(() {
+              if (actionIcon.icon == Icons.search) {
+                actionIcon = Icon(
+                  Icons.close,
+                  color: Colors.white,
+                );
+                appBarTitle = TextField(
+                  controller: _searchQuery,
+                  style: TextStyle(
+                    color: Colors.white,
                   ),
-                ),
-              ),
-            ),
-            Container(
-              child: Icon(Icons.search, size: 26,),
-            ),
-          ],
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.account_box_outlined, color: Colors.white, size: 25,),
+                      hintText: "Search...",
+                      hintStyle: TextStyle(color: Colors.white)),
+                );
+                //_handleSearchStart();
+              } else {
+                _handleSearchEnd();
+              }
+            });
+          },
         ),
-      ),
+      ]),
       body: chatRoomList(),
       drawer: drawerStyle(context),
       floatingActionButton: FloatingActionButton(

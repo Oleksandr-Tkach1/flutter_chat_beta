@@ -228,7 +228,7 @@ AlertDialog buildNameRequestDialog(BuildContext context, TextEditingController u
     ),
     actions: <Widget>[
       TextButton(
-        child: Text('Approve'),
+        child: Text('Apply'),
         onPressed: () => onPressed(),
       ),
     ],
@@ -251,3 +251,11 @@ class User {
         'email': email,
       };
 }
+
+
+Icon actionIcon = Icon(
+  Icons.search,
+  color: Colors.white,
+);
+
+Widget appBarTitle = Text("Your chats", style: TextStyle(color: Colors.white, fontSize: 25,),);
