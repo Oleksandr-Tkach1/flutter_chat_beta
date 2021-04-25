@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/authenticate.dart';
 import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/views/chatRoomsScreen.dart';
-import 'package:flutter_chat_beta/views/search.dart';
-
-import 'views/conversatoin_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +43,12 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: Color(0xff282727),
         primarySwatch: Colors.blue,
       ),
-      home: userIsLoggedIn == null ? Authenticate() : ChatRoomsScreen(),
+      home:
+      userIsLoggedIn == true
+          ?
+      ChatRoomsScreen()
+          :
+      Authenticate(),
       //home: ConversationScreen(''),
     );
   }

@@ -150,10 +150,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     SizedBox(width: 10,),
                     GestureDetector(
                       onTap: (){
-                        sendMessage(
-                            _imageFile,
-                            context
-                        );
+                        sendMessage(_imageFile, context);
                         FocusScope.of(context).unfocus();
                       },
                       child: Container(

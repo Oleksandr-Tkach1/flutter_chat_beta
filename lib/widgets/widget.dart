@@ -77,12 +77,13 @@ Widget drawerStyle(BuildContext context) {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(40),
                 ),
-                child: Text('${Constants.myName.substring(0, 1).toUpperCase()}', style: TextStyle(color: Colors.white, fontSize: 18),
+                //TODO
+                //child: Text('${Constants.myName.substring(0, 1).toUpperCase()}', style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),
           ),
-        ),
+        //),
         Container(
           color: Color(0xff282727),
           child: ListTile(
@@ -252,10 +253,22 @@ class User {
       };
 }
 
-
 Icon actionIcon = Icon(
   Icons.search,
   color: Colors.white,
 );
 
 Widget appBarTitle = Text("Your chats", style: TextStyle(color: Colors.white, fontSize: 25,),);
+
+
+Widget buildAppbar(Function function) {
+  return AppBar(centerTitle: true, title: appBarTitle, actions: <Widget>[
+    IconButton(
+      icon: actionIcon,
+      onPressed: () {
+        function.call();
+      },
+    ),
+  ]);
+
+}
