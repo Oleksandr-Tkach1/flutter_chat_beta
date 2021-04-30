@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
@@ -11,9 +12,10 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
-  TextEditingController chatNameController = new TextEditingController();
+  TextEditingController chatNameController = TextEditingController();
 
   QuerySnapshot searchSnapshot;
 
@@ -33,20 +35,16 @@ class _SearchState extends State<Search> {
               userEmail: searchSnapshot.docs[index].data()["email"],
             );
           }),
-    )
-        : Container();
+    ) : Container();
   }
 
+
   initiateSearch() {
-    if(databaseMethods.getUserByUsername != null){
       databaseMethods.getUserByUsername(searchTextEditingController.text).then((val) {
         setState(() {
           searchSnapshot = val;
         });
       });
-    }else{
-      Center(child: Text('User not found', style: TextStyle(fontSize: 25, color: Colors.white),));
-    }
   }
 
   Widget searchedItemTile(BuildContext globalContext, {String userName, String userEmail}) {
@@ -65,7 +63,6 @@ class _SearchState extends State<Search> {
                 userEmail,
                 style: simpleTextFieldStyle(),
               ),
-              //Divider(color: Colors.white, height: 20,),
               SizedBox(
                 height: 20,
               ),
@@ -74,6 +71,7 @@ class _SearchState extends State<Search> {
           Spacer(),
           GestureDetector(
             onTap: () {
+
               Function onPressed = onApproveButtonClick(userName, userEmail);
 
               showDialog(

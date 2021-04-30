@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/authenticate.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/services/storage.dart';
 import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
 import 'package:flutter_chat_beta/views/settings.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 Widget appBarMain(BuildContext context) {
@@ -37,7 +40,7 @@ TextStyle simpleTextFieldStyle() {
   );
 }
 
-Widget drawerStyle(BuildContext context) {
+Widget drawerStyle(BuildContext context, String myName) {
   AuthMethods authMethods = new AuthMethods();
   return Drawer(
     child: ListView(
@@ -77,13 +80,11 @@ Widget drawerStyle(BuildContext context) {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(40),
                 ),
-                //TODO
-                //child: Text('${Constants.myName.substring(0, 1).toUpperCase()}', style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                child: Text(myName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 23),),
               ),
             ),
           ),
-        //),
+        ),
         Container(
           color: Color(0xff282727),
           child: ListTile(
@@ -150,8 +151,19 @@ Widget drawerStyle(BuildContext context) {
   );
 }
 
+String getFirstChar(String myName) {
+  if(myName.length > 0) {
+    return myName.substring(0, 1).toUpperCase();
+  } else {
+    return '';
+  }
+}
+
+//TODO
 createChatRoomStartConversation({String userName, String userEmail, BuildContext context, String inputChatName}) {
+  final SecureStorage secureStorage = SecureStorage();
   if (userName != Constants.myName) {
+    secureStorage.writeSecureData('userName', userName);
     //String chatRoomId = getChatRoomId(userName, Constants.myName);
     var chatRoomId = Uuid().v1();
 
@@ -196,13 +208,11 @@ createChatRoomStartConversation({String userName, String userEmail, BuildContext
 
 AlertDialog buildNameRequestDialog(BuildContext context, TextEditingController userChatNameTextEditingController, Function onPressed){
   final formKey = GlobalKey<FormState>();
-
   // chatUserName(){
   //   if(formKey.currentState.validate()){
   //     Navigator.of(context).pop();
   //   }
   // };
-
   return AlertDialog(
     backgroundColor: Color(0xff282727),
     title: Text('Do you want to rename the chat?', style: TextStyle(color: Colors.white,)),
@@ -270,5 +280,4 @@ Widget buildAppbar(Function function) {
       },
     ),
   ]);
-
 }

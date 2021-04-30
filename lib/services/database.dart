@@ -66,4 +66,32 @@ class DatabaseMethods {
         .collection('ChatRoom')
         .where('users', arrayContainsAny: [userEmail, Constants.myEmail]).get();
   }
+
+  // TODO collection (Fit) documents (userPosts, likePost)
+  addImageAndComment(messagePostMap) {
+    FirebaseFirestore.instance
+        .collection('Fit')
+        .add(messagePostMap)
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+    //     .catchError((e) {
+    //   print(e.toString());
+    // });
+  }
+
+  getImageAndComment() async {
+    return await FirebaseFirestore.instance
+        .collection('Fit')
+        .snapshots();
+    //     .catchError((e) {
+    //   print(e.toString());
+    // });
+  }
+
+  uploadLike(int likePost) async {
+    return await FirebaseFirestore.instance
+        .collection('Fit')
+        .where("likePost", isEqualTo: likePost)
+        .get();
+  }
 }

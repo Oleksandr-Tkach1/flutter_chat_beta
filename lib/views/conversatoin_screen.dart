@@ -20,11 +20,11 @@ class ConversationScreen extends StatefulWidget {
 
 class _ConversationScreenState extends State<ConversationScreen> {
 
-  DatabaseMethods databaseMethods = new DatabaseMethods();
-  TextEditingController messageController = new TextEditingController();
+  DatabaseMethods databaseMethods = DatabaseMethods();
+  TextEditingController messageController = TextEditingController();
   Stream chatMessagesStream;
 
-  Widget ChatMessageList() {
+  Widget chatMessageList() {
     return Container(
       padding: EdgeInsets.only(bottom: 80),
       child: StreamBuilder(
@@ -102,7 +102,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
       body: Container(
         child: Stack(
           children: [
-            ChatMessageList(),
+            chatMessageList(),
             Container(
               alignment: Alignment.bottomCenter,
               child: Container(

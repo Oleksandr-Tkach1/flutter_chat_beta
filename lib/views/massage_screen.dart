@@ -3,10 +3,11 @@ import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
+import 'package:flutter_chat_beta/services/storage.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
-
 import 'conversatoin_screen.dart';
 import 'search.dart';
+
 class MessageScreen extends StatefulWidget {
   @override
   _MessageScreenState createState() => _MessageScreenState();
@@ -19,6 +20,7 @@ class _MessageScreenState extends State<MessageScreen>{
   Stream chatRoomsStream;
   bool _isSearching;
   final TextEditingController _searchQuery = TextEditingController();
+  final SecureStorage secureStorage = SecureStorage();
 
   Widget chatRoomList(){
     return StreamBuilder(
