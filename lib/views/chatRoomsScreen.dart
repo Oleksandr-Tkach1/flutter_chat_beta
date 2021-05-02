@@ -317,52 +317,66 @@ class UserFit extends StatelessWidget {
       this.imageUrl,
       this.comment,
       );
+
+  bool _isFavorited = false;
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xff262525),
-      //padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
-      child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 30,),
-          Row(
+      padding: EdgeInsets.only(bottom: 10, top: 5),
+      child: Card(
+        color: Color(0xff343333),
+        child: Container(
+          padding: EdgeInsets.only(bottom: 70,),
+          color: Color(0xff4c4949),
+          //padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: EdgeInsets.only(left: 22, bottom: 5),
-                child: Container(
-                  height: 47,
-                  width: 47,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(40),
+              SizedBox(height: 15,),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 12, bottom: 5),
+                    child: Container(
+                      height: 44,
+                      width: 44,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Text(Constants.myName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 23),),
+                    ),
                   ),
-                  child: Text(Constants.myName.substring(0, 1).toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 23),),
+                  SizedBox(width: 5,),
+                  Text(
+                    Constants.myName,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 5,),
+              Image.network(imageUrl, width: 375, height: 300, fit: BoxFit.fitWidth,),
+
+              Container(
+                child: IconButton(
+                  icon: (_isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+                  //onPressed: _toggleFavorite,
                 ),
               ),
-              SizedBox(width: 5,),
-              Text(
-                Constants.myName,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22,
-                ),
-              ),
+
+              imageUrl != null && imageUrl.isNotEmpty
+                  ? Container(constraints: BoxConstraints(maxWidth: 120),child: Align(alignment: Alignment.centerLeft, child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),),))
+                  : Container(constraints: BoxConstraints(maxWidth: 220),child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),)),
+              SizedBox(width: 8,),
+              //Text(userName, style: TextStyle(color: Colors.white, fontSize: 18),
+              //),
             ],
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(imageUrl, width: 350, height: 300, fit: BoxFit.fitWidth,),
-          ),
-
-          imageUrl != null && imageUrl.isNotEmpty
-              ? Container(constraints: BoxConstraints(maxWidth: 120),child: Align(alignment: Alignment.centerLeft, child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),),))
-              : Container(constraints: BoxConstraints(maxWidth: 220),child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),)),
-          SizedBox(width: 8,),
-          //Text(userName, style: TextStyle(color: Colors.white, fontSize: 18),
-          //),
-        ],
+        ),
       ),
     );
   }
