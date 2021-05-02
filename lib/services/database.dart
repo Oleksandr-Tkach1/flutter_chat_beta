@@ -82,16 +82,22 @@ class DatabaseMethods {
   getImageAndComment() async {
     return await FirebaseFirestore.instance
         .collection('Fit')
+        .orderBy('time', descending: true)
         .snapshots();
     //     .catchError((e) {
     //   print(e.toString());
     // });
   }
 
-  uploadLike(int likePost) async {
+  uploadLike(likePost) async {
+    FirebaseFirestore.instance
+        .collection('Fit')
+        .add(likePost);
+  }
+
+  getLike() async {
     return await FirebaseFirestore.instance
         .collection('Fit')
-        .where("likePost", isEqualTo: likePost)
-        .get();
+        .snapshots();
   }
 }

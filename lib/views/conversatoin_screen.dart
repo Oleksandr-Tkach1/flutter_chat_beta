@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter_chat_beta/helper/helperfunctions.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';

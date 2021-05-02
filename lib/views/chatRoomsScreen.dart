@@ -1,17 +1,12 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_beta/helper/constants.dart';
 import 'package:flutter_chat_beta/helper/helperfunctions.dart';
-import 'package:flutter_chat_beta/services/auth.dart';
 import 'package:flutter_chat_beta/services/database.dart';
 import 'package:flutter_chat_beta/services/storage.dart';
-import 'package:flutter_chat_beta/views/conversatoin_screen.dart';
-import 'package:flutter_chat_beta/views/search.dart';
 import 'package:flutter_chat_beta/widgets/widget.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'massage_screen.dart';
 import 'package:path/path.dart';
@@ -25,11 +20,11 @@ class ChatRoomsScreen extends StatefulWidget {
 class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
 
   TextEditingController userPostComment = TextEditingController();
+  //TextEditingController likePostCont = TextEditingController();
   final SecureStorage secureStorage = SecureStorage();
   DatabaseMethods databaseMethods = DatabaseMethods();
   String drawerName = '';
   Stream chatPostStream;
-  //QuerySnapshot snapshot;
 
   sendMessageCameraAndGallery(File imageFile, BuildContext context) async {
     var imageUrl;
@@ -39,41 +34,15 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
       Map<String, dynamic> messagePostMap = {
         'imageUrl': imageUrl, //test
         'comment': userPostComment.text,
-        // 'sendBy': Constants.myName,
-        // 'time': DateTime.now().millisecondsSinceEpoch,
+        'time': DateTime.now().minute.toString(),
       };
-
-    // databaseMethods.getImageAndComment().then((value){
-    //   setState(() {
-    //     chatPostStream = value;
-    //   });
-    // });
-
       databaseMethods.addImageAndComment(messagePostMap);
     userPostComment.text = "";
   }
 
-  // Widget postList() {
-  //   return snapshot != null && snapshot.size > 0
-  //       ? ConstrainedBox(
-  //     constraints: BoxConstraints(
-  //       maxWidth: 392.7,
-  //     ),
-  //     child: ListView.builder(
-  //         itemCount: snapshot.docs.length,
-  //         shrinkWrap: true,
-  //         itemBuilder: (context, index) {
-  //           return UserFit(
-  //             snapshot.docs[index].data()["imageUrl"],
-  //             snapshot.docs[index].data()["comment"],
-  //           );
-  //         }),
-  //   ) : Container();
-  // }
-
   Widget postList() {
     return chatPostStream != null ? Container(
-      padding: EdgeInsets.only(bottom: 80),
+      //padding: EdgeInsets.only(bottom: 20),
       child: StreamBuilder(
           stream: chatPostStream,
           builder: (BuildContext  context, snapshot) {
@@ -84,13 +53,13 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
                   return UserFit (
                       snapshot.data.docs[index].data()["imageUrl"],
                       snapshot.data.docs[index].data()["comment"],
+                    snapshot.data.docs[index].data()["like"],
                   );
                 }): Container();
           }
       ),
     ): Container(color: Colors.red,);
   }
-
 
   @override
   void initState() {
@@ -310,27 +279,33 @@ class _ChatRoomsScreenState extends State<ChatRoomsScreen> {
   }
 }
 
-class UserFit extends StatelessWidget {
+class UserFit extends StatefulWidget {
   final String imageUrl;
   final String comment;
+  final int like;
   UserFit(
       this.imageUrl,
       this.comment,
+      this.like,
       );
 
-  bool _isFavorited = false;
+  @override
+  _UserFitState createState() => _UserFitState();
+}
+
+class _UserFitState extends State<UserFit> {
+  bool _isFavorite = false;
+  int likePost = 2;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(bottom: 10, top: 5),
       child: Card(
-        color: Color(0xff343333),
+        color: Color(0xff312e2e),
         child: Container(
           padding: EdgeInsets.only(bottom: 70,),
-          color: Color(0xff4c4949),
-          //padding: EdgeInsets.symmetric(horizontal: 15, vertical: 16),
           child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 15,),
               Row(
@@ -359,25 +334,61 @@ class UserFit extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 5,),
-              Image.network(imageUrl, width: 375, height: 300, fit: BoxFit.fitWidth,),
-
-              Container(
-                child: IconButton(
-                  icon: (_isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
-                  //onPressed: _toggleFavorite,
-                ),
+              Image.network(widget.imageUrl, width: 375, height: 300, fit: BoxFit.fitWidth,),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 5),
+                    child: IconButton(
+                      icon: (_isFavorite ? Icon(Icons.favorite, size: 30,) : Icon(Icons.favorite_border, size: 30,)),
+                      onPressed: _toggleFavorite,
+                      color: Colors.red,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 50,
+                    child: Container(
+                      child: Text('$likePost', style: TextStyle(fontSize: 16, color: Colors.white),),
+                    ),
+                  ),
+                ],
               ),
-
-              imageUrl != null && imageUrl.isNotEmpty
-                  ? Container(constraints: BoxConstraints(maxWidth: 120),child: Align(alignment: Alignment.centerLeft, child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),),))
-                  : Container(constraints: BoxConstraints(maxWidth: 220),child: Text(comment, style: TextStyle(color: Colors.white, fontSize: 18,),)),
+              Row(
+                mainAxisAlignment:MainAxisAlignment.start,
+                children: [
+                  Container(
+                      padding: const EdgeInsets.only(left: 16),
+                      constraints: BoxConstraints(maxWidth: 365),
+                      child: Text('Comment: ' + widget.comment, style: TextStyle(color: Colors.white, fontSize: 18,),)),
+                ],
+              ),
               SizedBox(width: 8,),
-              //Text(userName, style: TextStyle(color: Colors.white, fontSize: 18),
-              //),
             ],
           ),
         ),
       ),
     );
+  }
+  void _toggleFavorite(){
+    setState(() {
+      if (_isFavorite) {
+        _isFavorite = false;
+        likePost -= 2;
+        print('LIKE_POST MINUS: ' + likePost.toString());
+      } else
+        _isFavorite = true;
+        likePost += 1;
+      print('LIKE_POST PLUS ' + likePost.toString());
+    });
+
+
+    // bool _loading = false;
+    //
+    // void _onLoading() {
+    //   setState(() {
+    //     _loading = true;
+    //     Future.delayed(Duration(seconds: 3),);
+    //   });
+    // }
   }
 }
