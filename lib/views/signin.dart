@@ -53,7 +53,7 @@ class _SignInState extends State<SignIn> {
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height - 50,
-          alignment: Alignment.center,
+          alignment: Alignment.bottomCenter,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: Column(
@@ -64,41 +64,84 @@ class _SignInState extends State<SignIn> {
                   key: formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        validator: (val) {
-                          return RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(val)
-                              ? null
-                              : "Please provide a valid Email";
-                        },
-                        controller: emailTextEditingController,
-                        style: simpleTextFieldStyle(),
-                        decoration: textFieldInputDecoration('Email'),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: TextFormField(
+                            validator: (val) {
+                              return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(val)
+                                  ? null
+                                  : "Please provide a valid Email";
+                            },
+                            controller: emailTextEditingController,
+                            style: simpleTextFieldStyle(),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(top: 40, left: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide(
+                                  color: Colors.white,
+                                  width: 2.0,
+                                ),
+                              ),
+                              fillColor: Colors.white,
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide(
+                                  width: 3.0,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              hintText: 'Email',
+                              hintStyle: TextStyle(color: Colors.white),
+                            ),
+                          ),
                       ),
-                      TextFormField(
-                          obscureText: true,
-                          validator: (val) {
-                            return val.length > 6
-                                ? null
-                                : 'Please provide password 6+ character';
-                          },
-                          controller: passwordTextEditingController,
-                          style: simpleTextFieldStyle(),
-                          decoration: textFieldInputDecoration('Password')),
+                      Container(
+                        padding: EdgeInsets.only(bottom: 80),
+                        child: TextFormField(
+                            obscureText: true,
+                            validator: (val) {
+                              return val.length > 6
+                                  ? null
+                                  : 'Please provide password 6+ character';
+                            },
+                            controller: passwordTextEditingController,
+                            style: simpleTextFieldStyle(),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.only(top: 40, left: 10),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                                width: 2.0,
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                width: 3.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 SizedBox(height: 25),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(fontSize: 17, color: Colors.white),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 SizedBox(height: 25),
                 GestureDetector(
                   onTap: (){
@@ -135,24 +178,29 @@ class _SignInState extends State<SignIn> {
                     style: TextStyle(color: Colors.black, fontSize: 20),
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Don`t have account? ',
-                        style: TextStyle(fontSize: 17, color: Colors.white)),
+                    Container(
+                      padding: EdgeInsets.only(top: 14),
+                      child: Text('Don`t have account? ',
+                          style: TextStyle(fontSize: 17, color: Colors.white)),
+                    ),
                     GestureDetector(
                       onTap: () {
                         widget.toggle();
                       },
                       child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: EdgeInsets.only(top: 14),
                           child: Text('Register now',
                               style: TextStyle(
                                   fontSize: 17,
                                   color: Colors.white,
                                   decoration: TextDecoration.underline))),
                     ),
+                    SizedBox(height: 100,)
                   ],
                 ),
               ],

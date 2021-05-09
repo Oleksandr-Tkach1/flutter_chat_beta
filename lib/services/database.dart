@@ -17,7 +17,8 @@ class DatabaseMethods {
   }
 
   uploadUserInfo(userMap) {
-    FirebaseFirestore.instance.collection('users').add(userMap).catchError((e) {
+    FirebaseFirestore.instance.collection('users').
+    add(userMap).catchError((e) {
       print(e.toString());
     });
   }
@@ -89,10 +90,18 @@ class DatabaseMethods {
     // });
   }
 
-  uploadLike(likePost) async {
+  // uploadLike(int like) async {
+  //   FirebaseFirestore.instance
+  //       .collection('Fit')
+  //       .add(like);
+  // }
+
+  addLike(String documentId, int likesCount) {
+    if(likesCount < 0) likesCount = 0;
     FirebaseFirestore.instance
-        .collection('Fit')
-        .add(likePost);
+        .collection("Fit")
+        .doc(documentId)
+        .update({"likesCount": likesCount}).onError((error, stackTrace) => print('error adding like'));
   }
 
   getLike() async {
