@@ -68,7 +68,8 @@ Widget drawerStyle(BuildContext context, String myName) {
               ),
               accountEmail: Container(
                   padding: EdgeInsets.only(left: 5),
-                  child: Text(Constants.myEmail,
+                  child: Text(
+                    Constants.myEmail,
                       style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
               ),
